@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/ballknowledge/static/css/main.4e5fa925.css",
-    "main.js": "/ballknowledge/static/js/main.114e91a8.js",
+    "main.css": "/ballknowledge/static/css/main.060526e6.css",
+    "main.js": "/ballknowledge/static/js/main.24ce2418.js",
     "static/media/curry.png": "/ballknowledge/static/media/curry.9e55314873c58754753f.png",
     "static/media/giannis.png": "/ballknowledge/static/media/giannis.1baf55b26d8ac260ba94.png",
     "static/media/jokic.png": "/ballknowledge/static/media/jokic.874fc1af8d0dd9f0eda4.png",
@@ -18,11 +18,11 @@
     "static/media/Celtics.png": "/ballknowledge/static/media/Celtics.101428574a049e90e2a3.png",
     "static/media/bulls.jpg": "/ballknowledge/static/media/bulls.b79635c0413e08352a12.jpg",
     "index.html": "/ballknowledge/index.html",
-    "main.4e5fa925.css.map": "/ballknowledge/static/css/main.4e5fa925.css.map",
-    "main.114e91a8.js.map": "/ballknowledge/static/js/main.114e91a8.js.map"
+    "main.060526e6.css.map": "/ballknowledge/static/css/main.060526e6.css.map",
+    "main.24ce2418.js.map": "/ballknowledge/static/js/main.24ce2418.js.map"
   },
   "entrypoints": [
-    "static/css/main.4e5fa925.css",
-    "static/js/main.114e91a8.js"
+    "static/css/main.060526e6.css",
+    "static/js/main.24ce2418.js"
   ]
 }
