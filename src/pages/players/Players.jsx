@@ -1,18 +1,50 @@
 
 import "./Players.css";
+import { useState, useEffect } from "react";
 import Player from "../../components/player/Player";
 import Slideshow from "../../components/slideshow/Slideshow";
 
-import anthony from "../../components/player/images/anthony.png";
-import victorw from "../../components/player/images/victorw.png";
-import sga from "../../components/player/images/sga.png";
-import jokic from "../../components/player/images/jokic.png";
-import luka from "../../components/player/images/luka.png";
-import brunson from "../../components/player/images/Brunson.png";
-import giannis from "../../components/player/images/giannis.png";
-import curry from "../../components/player/images/curry.png";
-
 const Players = () => {
+    const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const getPlayers = async () => {
+            try {
+                const response = await fetch(
+                    "https://beyondthearcserver.onrender.com/api/players"
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to load players");
+                }
+
+                const data = await response.json();
+                setPlayers(data);
+            } catch (error) {
+                console.error("Error fetching players:", error);
+                setError("Unable to load players. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getPlayers();
+    }, []);
+
+    // Match API player names to existing preview routes
+    const playerLinks = {
+        "ANTHONY EDWARDS": "anthony",
+        "VICTOR WEMBANYAMA": "victorw",
+        "SHAI GILGEOUS-ALEXANDER": "sga",
+        "NIKOLA JOKIC": "jokic",
+        "LUKA DONCIC": "luka",
+        "JALEN BRUNSON": "brunson",
+        "GIANNIS ANTETOKOUNMPO": "giannis",
+        "STEPHEN CURRY": "curry"
+    };
+
     return (
         <main id="players-page" className="page">
 
@@ -25,13 +57,16 @@ const Players = () => {
                 </p>
             </div>
 
-        <Slideshow />
+            <Slideshow />
 
             <div id="player-search">
-                <label>FIND A PLAYER</label>
+                <label htmlFor="player-search-input">
+                    FIND A PLAYER
+                </label>
 
                 <div id="search-fields">
                     <input
+                        id="player-search-input"
                         type="text"
                         placeholder="SEARCH PLAYERS..."
                     />
@@ -47,70 +82,21 @@ const Players = () => {
                 </div>
             </div>
 
+            {loading && <p className="players-status">Loading players...</p>}
+
+            {error && <p className="players-status">{error}</p>}
+
             <div id="players-grid">
-                <Player
-                    name="ANTHONY EDWARDS"
-                    team="SG - MINNESOTA TIMBERWOLVES"
-                    image={anthony}
-                    link="/players/anthony"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="VICTOR WEMBANYAMA"
-                    team="C - SAN ANTONIO SPURS"
-                    image={victorw}
-                    link="/players/victorw"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="SHAI GILGEOUS-ALEXANDER"
-                    team="PG/SG - OKLAHOMA CITY THUNDER"
-                    image={sga}
-                    link="/players/sga"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="NIKOLA JOKIC"
-                    team="C - DENVER NUGGETS"
-                    image={jokic}
-                    link="/players/jokic"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="LUKA DONCIC"
-                    team="PG - LOS ANGELES LAKERS"
-                    image={luka}
-                    link="/players/luka"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="JALEN BRUNSON"
-                    team="PG - NEW YORK KNICKS"
-                    image={brunson}
-                    link="/players/brunson"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="GIANNIS ANTETOKOUNMPO"
-                    team="PF - MILWAUKEE BUCKS"
-                    image={giannis}
-                    link="/players/giannis"
-                    buttonText="VIEW STATS"
-                />
-
-                <Player
-                    name="STEPHEN CURRY"
-                    team="PG - GOLDEN STATE WARRIORS"
-                    image={curry}
-                    link="/players/curry"
-                    buttonText="VIEW STATS"
-                />
+                {players.map((player) => (
+                    <Player
+                        key={player._id}
+                        name={player.name}
+                        team={`${player.position} - ${player.team}`}
+                        image={`https://beyondthearcserver.onrender.com/${player.image}`}
+                        link={`/players/${playerLinks[player.name]}`}
+                        buttonText="VIEW STATS"
+                    />
+                ))}
             </div>
 
         </main>
