@@ -1,0 +1,100 @@
+
+#add-hooper {
+    max-width: 650px;
+    margin: 60px auto 0;
+    text-align: center;
+}
+
+.add-hooper-label {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#add-hooper h2 {
+    color: white;
+    font-size: 28px;
+    margin: 10px 0 30px;
+}
+
+#add-hooper-form {
+    background: #1c1c1c;
+    border-top: 4px solid var(--orange);
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#add-hooper-form label {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#add-hooper-form input,
+#add-hooper-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    background: white;
+    color: black;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#add-hooper-form button {
+    background: var(--orange);
+    color: black;
+    border: none;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#add-hooper-form button:hover {
+    background: #d96538;
+}
+
+#add-hooper-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.hooper-feedback {
+    text-align: center;
+    font-size: 13px;
+    margin: 15px 0 0;
+}
+
+.hooper-feedback.success {
+    color: #7ee0a0;
+}
+
+.hooper-feedback.error {
+    color: #ff8b8b;
+}
+
+@media only screen and (max-width: 780px) {
+    #add-hooper {
+        margin-top: 35px;
+    }
+
+    #add-hooper h2 {
+        font-size: 20px;
+    }
+
+    #add-hooper-form {
+        padding: 20px 15px;
+    }
+
+    #add-hooper-form input,
+    #add-hooper-form select {
+        font-size: 12px;
+        padding: 10px;
+    }
+}

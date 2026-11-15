@@ -3,18 +3,25 @@ import "./Players.css";
 import { useState, useEffect } from "react";
 import Player from "../../components/player/Player";
 import Slideshow from "../../components/slideshow/Slideshow";
+import FanHooper from "../../components/fanhooper/FanHooper";
+import AddHooper from "../../components/addhooper/AddHooper";
+
+const API_URL = "https://beyondthearcserver.onrender.com";
 
 const Players = () => {
     const [players, setPlayers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const [fanHoopers, setFanHoopers] = useState([]);
+    const [fanLoading, setFanLoading] = useState(true);
+    const [fanError, setFanError] = useState("");
+
+    // Fetch NBA players from Render
     useEffect(() => {
         const getPlayers = async () => {
             try {
-                const response = await fetch(
-                    "https://beyondthearcserver.onrender.com/api/players"
-                );
+                const response = await fetch(`${API_URL}/api/players`);
 
                 if (!response.ok) {
                     throw new Error("Failed to load players");
@@ -33,7 +40,35 @@ const Players = () => {
         getPlayers();
     }, []);
 
-    // Match API player names to existing preview routes
+    // Fetch fan-created hoopers from Render
+    useEffect(() => {
+        const getFanHoopers = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/fanhoopers`);
+
+                if (!response.ok) {
+                    throw new Error("Failed to load fan hoopers");
+                }
+
+                const data = await response.json();
+                setFanHoopers(data);
+            } catch (error) {
+                console.error("Error fetching fan hoopers:", error);
+                setFanError("Unable to load fan hoopers. Please try again later.");
+            } finally {
+                setFanLoading(false);
+            }
+        };
+
+        getFanHoopers();
+    }, []);
+
+    // Automatically update the fan hooper list after a successful POST
+    const handleHooperAdded = (newHooper) => {
+        setFanHoopers((previous) => [...previous, newHooper]);
+    };
+
+    // Match NBA player names to existing preview routes
     const playerLinks = {
         "ANTHONY EDWARDS": "anthony",
         "VICTOR WEMBANYAMA": "victorw",
@@ -82,9 +117,13 @@ const Players = () => {
                 </div>
             </div>
 
-            {loading && <p className="players-status">Loading players...</p>}
+            {loading && (
+                <p className="players-status">Loading players...</p>
+            )}
 
-            {error && <p className="players-status">{error}</p>}
+            {error && (
+                <p className="players-status">{error}</p>
+            )}
 
             <div id="players-grid">
                 {players.map((player) => (
@@ -92,12 +131,45 @@ const Players = () => {
                         key={player._id}
                         name={player.name}
                         team={`${player.position} - ${player.team}`}
-                        image={`https://beyondthearcserver.onrender.com/${player.image}`}
+                        image={`${API_URL}/${player.image}`}
                         link={`/players/${playerLinks[player.name]}`}
                         buttonText="VIEW STATS"
                     />
                 ))}
             </div>
+
+            {/* Fan Hooper Showcase */}
+            <section id="fan-showcase">
+                <div id="fan-showcase-title">
+                    <p>YOUR GAME. YOUR STYLE.</p>
+                    <h2>FAN HOOPER SHOWCASE</h2>
+                    <p>
+                        Check out fan-created basketball profiles
+                        and create your own!
+                    </p>
+                </div>
+
+                {fanLoading && (
+                    <p className="players-status">
+                        Loading fan hoopers...
+                    </p>
+                )}
+
+                {fanError && (
+                    <p className="players-status">{fanError}</p>
+                )}
+
+                <div id="fan-hooper-list">
+                    {fanHoopers.map((hooper) => (
+                        <FanHooper
+                            key={hooper._id}
+                            hooper={hooper}
+                        />
+                    ))}
+                </div>
+
+                <AddHooper onHooperAdded={handleHooperAdded} />
+            </section>
 
         </main>
     );
